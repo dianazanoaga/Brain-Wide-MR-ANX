@@ -1,4 +1,3 @@
-
 #!/usr/bin/env Rscript
 
 args = commandArgs(trailingOnly=TRUE)
@@ -7,19 +6,16 @@ library(remotes)
 library(readxl)
 library(data.table)
 library(TwoSampleMR)
-library("plyr")
-library("dplyr")
+library(dplyr)
 library(MRInstruments)
 library(ieugwasr)
-library("ragg")
+library(ragg)
 library(Cairo)
 library(mr.raps)
 library(WriteXLS)
 library(writexl)
 
-
-
-# load necessary datasets
+# Load necessary datasets
 
 uk_all<- fread("/gpfs/gibbs/pi/polimanti/diana/uk_all_snp_rename.txt")
 uk_all <- as.data.frame(uk_all)
@@ -29,6 +25,7 @@ batch_args <- t(batch_args)
 print(seq_along(batch_args))
 
 for (i in seq_along(batch_args)) {
+
   print(i)
   print(batch_args[i])
   brain_all <- fread(batch_args[i])
@@ -39,15 +36,14 @@ for (i in seq_along(batch_args)) {
   
   print(id)
   
-  # select only significant SNPs for both datasets
+  # Select only significant SNPs for both datasets
   uk_sig <- uk_all[uk_all$pval < 5*10^(-8),]
   uk_sig_relaxed <- uk_all[uk_all$pval < 1*10^(-5),]
   
   brain_sig <- brain_all[brain_all$pvalue < 5*10^(-8),]
   brain_sig_relaxed <- brain_all[brain_all$pvalue < 1*10^(-5),]
   
-  
-   
+  # Format data 
   uk_for_relaxed <- format_data(uk_sig_relaxed, 
                                 type="exposure", 
                                 phenotype_col = "anxiety",
@@ -58,7 +54,6 @@ for (i in seq_along(batch_args)) {
                                 other_allele_col = "ref.x",
                                 pval_col = "pval_EUR")
   
-   
   brain_for_relaxed <- format_data(brain_sig_relaxed, 
                                    type="exposure", 
                                    phenotype_col = "brain",
@@ -74,13 +69,12 @@ for (i in seq_along(batch_args)) {
   
   uk_clump_relaxed <- uk_for_relaxed
   uk_clump_relaxed <- clump_data(uk_clump_relaxed)
-  
-  
+
   brain_clump_relaxed <- brain_for_relaxed
   brain_clump_relaxed <- clump_data(brain_clump_relaxed)
   
- 
-  
+  # Read outcome 
+
   brain_out_relaxed <- read_outcome_data(
     snps = uk_clump_relaxed$SNP,
     sep = ",",
@@ -94,7 +88,6 @@ for (i in seq_along(batch_args)) {
     samplesize_col = "n"
   )
   
-  
   uk_out_relaxed <- read_outcome_data(
     snps = brain_clump_relaxed$SNP,
     sep = ",",
@@ -107,17 +100,16 @@ for (i in seq_along(batch_args)) {
     pval_col = "pval_EUR"
   )
   
-  
-  # harmoniza for anx as exposure and brain as outcome
-  
- 
+  # Harmoniza for ANX as exposure and Brain IDP as outcome
   
   anx_brain_harmonize_relaxed <- harmonise_data(
+
     exposure_dat = uk_clump_relaxed, 
     outcome_dat = brain_out_relaxed
+
   )
   
-  #mendelian 
+  # Perform Mendelian Randomization 
   
   mr_anx_brain_relaxed <- mr(anx_brain_harmonize_relaxed, method_list = c("mr_ivw_mre" , "mr_raps"))
   mr_anx_brain_relaxed$"exposure" = "ukbio anxiety"
@@ -127,13 +119,16 @@ for (i in seq_along(batch_args)) {
   
   list_data_1 <- mr_anx_brain_relaxed
   
+  # Harmonize for ANX as outcome and Brain IDP as exposure
   
   brain_anx_harmonize_relaxed <- harmonise_data(
+
     exposure_dat = brain_clump_relaxed, 
     outcome_dat = uk_out_relaxed
+
   )
   
-  #mendelian 
+  # Perform Mendelian Randomization
   
   mr_brain_anx_relaxed <- mr(brain_anx_harmonize_relaxed, method_list = c("mr_ivw_mre" , "mr_raps"))
   mr_brain_anx_relaxed$"exposure" =  batch_args[i]
