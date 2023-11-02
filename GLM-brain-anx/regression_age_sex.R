@@ -85,7 +85,6 @@ for(i in c(1:26)){
 }
 
 
-
 for(i in c(1:26)){
   
   my_var <- paste0("0953_anx_right_", my_list[i], "_finfin")
@@ -111,7 +110,6 @@ for(i in c(1:26)){
   write.csv(dt_d ,file=paste0('/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_agesex_0953right_2sex/', "0953_anx_right_", my_list[i], ".xlsx"))
   
 }
-
 
 for(i in c(1:26)){
   
@@ -140,7 +138,6 @@ for(i in c(1:26)){
 }
 
 #PREPARAR FILES
-
 
 # new 
 
@@ -271,8 +268,6 @@ all_cov_0953left.results <- all_cov_0953left.results[,c(6,1,2,3,4,5)]
 write_xlsx(all_cov_0953left.results ,"/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/agesex_0953left_2sex.result.xlsx")
 
 
-
-
 # new 
 
 my_list_0953r <-list.files("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_agesex_0953right_1sex")
@@ -295,12 +290,8 @@ for(i in c(1:26)){
 all_cov_0953right.results <- all_cov_0953right.results[,c(6,1,2,3,4,5)]
 write_xlsx(all_cov_0953right.results ,"/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/agesex_0953right_1sex.result.xlsx")
 
-
 my_list_0953r <-list.files("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_agesex_0953right_2sex")
 all_cov_0953right.results <- data.frame(matrix(nrow=0, ncol=5))
-i = 1
-prova <- fread(paste0("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_agesex_0953right_2sex/",my_list_0953r[i]))
-colnames(all_cov_0953right.results) <- colnames(prova)
 
 for(i in c(1:26)){
   
@@ -316,8 +307,6 @@ for(i in c(1:26)){
 all_cov_0953right.results <- all_cov_0953right.results[,c(6,1,2,3,4,5)]
 write_xlsx(all_cov_0953right.results ,"/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/agesex_0953right_2sex.result.xlsx")
 
-
-
 a <- read_excel("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/agesex_0953right_1sex.result.xlsx")
 b <- read_excel("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/agesex_0953left_1sex.result.xlsx")
 c <- read_excel("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/agesex_0043right_1sex.result.xlsx")
@@ -328,11 +317,9 @@ b <- read_excel("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/agesex_0953left_2
 c <-read_excel("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/agesex_0043right_2sex.result.xlsx")
 d <- read_excel("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/agesex_0043left_2sex.result.xlsx")
 
-
 all <- rbind(a,b, c, d)
 all$"adj_pvalue" <- p.adjust(all$`Pr(>|z|)`, method = "fdr")
 write_xlsx(all,"/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/agesex_1.result.xlsx")
-
 
 all2 <- rbind(a,b, c, d)
 all2$"adj_pvalue" <- p.adjust(all2$`Pr(>|z|)`, method = "fdr")

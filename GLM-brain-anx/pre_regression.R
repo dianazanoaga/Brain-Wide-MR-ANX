@@ -1,8 +1,7 @@
 library(remotes)
 library(readxl)
 library(data.table)
-library("plyr")
-library("dplyr")
+library(dplyr)
 library(meta)
 library(purrr)
 library(metafor)
@@ -19,23 +18,17 @@ right_0043 <- h[, h$`25799-2.0`]
 right_0043 <- as.data.frame(right_0043)
 right_0043$"ID" <- eid
 
-
 left_0043 <- h[, h$`25798-2.0`]
 left_0043 <- as.data.frame(left_0043)
 left_0043$"ID" <- eid
-
 
 right_0953 <- h[, h$`27558-2.0`]
 right_0953 <- as.data.frame(right_0953)
 right_0953$"ID" <- eid
 
-
 left_0953 <- h[, h$`27336-2.0`]
 left_0953 <- as.data.frame(left_0953)
 left_0953$"ID" <- eid
-
-
-
 
 anx <- fread("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/allpops_pc_cov_ukbbridge.txt", fill=TRUE)
 anx_da_usare <- anx[anx$related == "false", c(1,24:28)]
@@ -45,12 +38,10 @@ anx_right_0043 <- reduce(data_frames_0043r, inner_join, by = "ID")
 sum(!is.na(anx_right_0043$right_0043)) #32892
 anx_right_0043_fin <- anx_right_0043[!is.na(anx_right_0043$right_0043),]
 
-
 data_frames_0043l <- list(anx_da_usare, left_0043)
 anx_left_0043 <- reduce(data_frames_0043l, inner_join, by = "ID")
 sum(!is.na(anx_left_0043$left_0043)) #32892
 anx_left_0043_fin <- anx_left_0043[!is.na(anx_left_0043$left_0043),]
-
 
 data_frames_0953r <- list(anx_da_usare, right_0953)
 anx_right_0953 <- reduce(data_frames_0953r, inner_join, by = "ID")
@@ -62,11 +53,9 @@ anx_left_0953 <- reduce(data_frames_0953l, inner_join, by = "ID")
 sum(!is.na(anx_left_0953$left_0953)) #33124
 anx_left_0953_fin <- anx_left_0953[!is.na(anx_left_0953$left_0953),]
 
-
 my_list <-list.files("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/anx_symptoms")
 
 lista_numero_col <- data.frame(matrix(nrow=28, ncol=1))
-
 
 for(i in c(1:28)){
   
@@ -149,11 +138,7 @@ for(i in c(1:28)){
   
 }
 
-
-
-
 # STANDARDIZE BRAIN DAT (MEAN 0 SD 1), SEX FROM 0-1 TO 1-2, -121 E -818 TO NA
-
 
 for(i in c(1:26)){
   
@@ -278,8 +263,6 @@ for(i in c(1:26)){
   
 }
 
-
-
 my_list_0043l <-list.files("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_all_cov_0043left")
 
 all_cov_0043left.results <- data.frame(matrix(nrow=26, ncol=5))
@@ -288,7 +271,6 @@ i = 1
 prova <- fread(paste0("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_all_cov_0043left/",my_list_0043l[i]))
 colnames(all_cov_0043left.results) <- colnames(prova)
   
-
 for(i in c(1:26)){
   
   my_var <- fread(paste0("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_all_cov_0043left/",my_list_0043l[i]))
@@ -298,17 +280,11 @@ for(i in c(1:26)){
 
 write.csv(all_cov_0043left.results ,file= "/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/all_cov_0043left.result.xlsx")
 
-
 # new 
 
 my_list_0043r <-list.files("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_all_cov_0043right")
 
 all_cov_0043right.results <- data.frame(matrix(nrow=26, ncol=5))
-
-i = 1
-prova <- fread(paste0("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_all_cov_0043right/",my_list_0043r[i]))
-colnames(all_cov_0043right.results) <- colnames(prova)
-
 
 for(i in c(1:26)){
   
@@ -328,7 +304,6 @@ all_cov_0953left.results <- data.frame(matrix(nrow=26, ncol=5))
 i = 1
 prova <- fread(paste0("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_all_cov_0953left/",my_list_0953l[i]))
 colnames(all_cov_0953left.results) <- colnames(prova)
-
 
 for(i in c(1:26)){
   
@@ -394,8 +369,6 @@ for(i in c(1:26)){
   
 }
 
-
-
 my_list_0043l <- list.files("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_agesex_0043left")
 all_cov_0043left.results <- data.frame(matrix(nrow=0, ncol=6))
 i = 1
@@ -415,7 +388,6 @@ for(i in c(1:26)){
 
 all_cov_0043left.results <- all_cov_0043left.results[,c(6,1,2,3,4,5)]
 write.csv(all_cov_0043left.results ,file= "/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/agesex_0043left.result.xlsx")
-
 
 # new 
 
@@ -477,6 +449,7 @@ for(i in c(1:26)){
   all_cov_0953right.results <- rbind(all_cov_0953right.results, all_cov_0953right.res)
   
 }
+
 all_cov_0953right.results <- all_cov_0953right.results[,c(6,1,2,3,4,5)]
 write_xlsx(all_cov_0953right.results ,"/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/agesex_0953right.result.xlsx")
 
