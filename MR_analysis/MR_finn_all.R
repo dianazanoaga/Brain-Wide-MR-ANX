@@ -20,9 +20,7 @@ library(writexl)
 
 # load necessary datasets
 
-finn_all <- fread("/gpfs/gibbs/pi/polimanti/diana/gad_analysis/input_gad/finngen_R8_KRA_PSY_ANXIETY_EXMORE")
-finn_all <- as.data.frame(finn_all)
-write.csv(finn_all, file="/gpfs/gibbs/pi/polimanti/diana/finn_all.txt")
+finn_all <- fread("/gpfs/gibbs/pi/polimanti/diana/finn_all.txt")
 
 
 batch_args <- read_excel(args[1])
@@ -33,6 +31,7 @@ print(seq_along(batch_args))
 for (i in seq_along(batch_args)) {
   print(i)
   print(batch_args[i])
+
   brain_all <- fread(batch_args[i])
   brain_all <- as.data.frame(brain_all)
   
@@ -181,14 +180,11 @@ for (i in seq_along(batch_args)) {
     pval_col = "pval"
   )
   
-  
-  
+
   mr_method_list()$name
   
   # harmoniza for anx as exposure and brain as outcome
   
-  #if(dim(brain_out)[1] <5) {
-    
     anx_brain_harmonize_relaxed <- harmonise_data(
       exposure_dat = finn_clump_relaxed, 
       outcome_dat = brain_out_relaxed
@@ -204,28 +200,12 @@ for (i in seq_along(batch_args)) {
     list_data_1 <- mr_anx_brain_relaxed
     
     
-  #} else {
-    
-    #anx_brain_harmonize <- harmonise_data(
-     # exposure_dat = finn_clump, 
-      #outcome_dat = brain_out
-    #)
-    
-    #mr_anx_brain <- mr(anx_brain_harmonize, method_list = mr_method_list()$obj)
-    #mr_anx_brain$"exposure" = "finn anxiety"
-    #mr_anx_brain$"outcome" =  batch_args[i]
-    #n <- dim(mr_anx_brain)[1]
-    #mr_anx_brain$"threshold" = rep("stringent threshold", n)
-    
-    #list_data_1 <- mr_anx_brain
-    
-  #}
+  
   
   
   # harmonize for brain as exposure and anx as outcome
   
-  #if(dim(finn_out)[1] < 5) {
-    
+   
     brain_anx_harmonize_relaxed <- harmonise_data(
       exposure_dat = brain_clump_relaxed, 
       outcome_dat = finn_out_relaxed
@@ -240,24 +220,6 @@ for (i in seq_along(batch_args)) {
     
     list_data_2 <- mr_brain_anx_relaxed
     
-  #} else{
-    
-    #brain_anx_harmonize <- harmonise_data(
-      #exposure_dat = brain_clump, 
-      #outcome_dat = finn_out
-    #)
-    
-    #mendelian 
-    #mr_brain_anx <- mr(brain_anx_harmonize, method_list = mr_method_list()$obj)
-    #mr_brain_anx$"exposure" = batch_args[i]
-    #mr_brain_anx$"outcome" =  "finn anxiety"
-    #n <- dim(mr_brain_anx)[1]
-    #mr_brain_anx$"threshold" = rep("stringent threshold", n)
-    
-    #list_data_2 <- mr_brain_anx
-    
-    
-  #}
   
   list_data <- list("anx_brain" = list_data_1 ,"brain_anx" = list_data_2)
   
