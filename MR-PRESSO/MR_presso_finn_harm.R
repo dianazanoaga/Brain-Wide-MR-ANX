@@ -3,8 +3,8 @@
 library(remotes)
 library(readxl)
 library(data.table)
-library("plyr")
-library("dplyr")
+library(plyr)
+library(dplyr)
 library(meta)
 library(purrr)
 library(metafor)
@@ -14,15 +14,12 @@ library(writexl)
 library(MendelianRandomization)
 library(tidyverse)
 library(TwoSampleMR)
-
 library(MRPRESSO)
-
 
 # Load summary statistics 
 
 my_list = c("/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/0953.txt","/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/0043.txt","/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/1961.txt",
             "/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/1511.txt","/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/1437.txt","/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/3915.txt")
-
 
 finn_all <- fread("/gpfs/gibbs/pi/polimanti/diana/gad_analysis/input_gad/finngen_R8_KRA_PSY_ANXIETY_EXMORE")
 
@@ -40,38 +37,42 @@ for(i in 1:length(my_list)) {  # assign function within loop
                                           pval_col = "pvalue"))
 }
 
+# select only those with pvalue less than 1x10^(-5) and clump data 
 
-# select only those with pvalu less than 1x10(-5) and clump data 
 for(i in 1:6){
   
-  assign(paste0("b_",i), get(paste0("brain_", i))[get(paste0("brain_", i))$pval.exposure < 1*10^(-5),])
-  assign(paste0("b_", i, "_clump"), clump_data(get(paste0("b_",i))))
+  assign(paste0("b_", i), get(paste0("brain_", i))[get(paste0("brain_", i))$pval.exposure < 1*10^(-5),])
+  assign(paste0("b_", i, "_clump"), clump_data(get(paste0("b_", i))))
   
 } 
 
 # select snps in the outcome based on the snps in the exposure AND HARMONIZE
 
-for(i in 1:6) {
+for(i in 1:length(my_list)) {
+
   assign(paste0("finn_out_",i), read_outcome_data(
-    snps = get(paste0("b_", i, "_clump"))$SNP,
-    sep = ",",
-    filename = "/gpfs/gibbs/pi/polimanti/diana/finn_all.txt",
-    snp_col = "rsids",
-    beta_col = "beta",
-    se_col = "sebeta",
-    effect_allele_col = "alt",
-    other_allele_col = "ref",
-    pval_col = "pval"))
+
+      snps = get(paste0("b_", i, "_clump"))$SNP,
+      sep = ",",
+      filename = "/gpfs/gibbs/pi/polimanti/diana/finn_all.txt",
+      snp_col = "rsids",
+      beta_col = "beta",
+      se_col = "sebeta",
+      effect_allele_col = "alt",
+      other_allele_col = "ref",
+      pval_col = "pval")
+
+    )
   
  
-  assign(paste0("brain_anx_harmonize_",i), harmonise_data(
-    exposure_dat = get(paste0("b_", i, "_clump")), 
-    outcome_dat = get(paste0("finn_out_", i))
-  ))
-  
-  
-}
+  assign(paste0("brain_anx_harmonize_", i), harmonise_data(
 
+    exposure_dat = get(paste0("b_", i, "_clump")), 
+    outcome_dat = get(paste0("finn_out_", i)))
+
+  )
+
+}
 
 mr_res_presso_finn <- as.data.frame(matrix(nrow=6, ncol=1))
 
@@ -79,7 +80,7 @@ mr_res_presso_finn$out_ind_finn <- NULL
 mr_res_presso_finn$out_snp_finn <- NULL
 
 
-for(i in c(1:6)){
+for(i in 1:length(my_list)){
   
   print(i)
   

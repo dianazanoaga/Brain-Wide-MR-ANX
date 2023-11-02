@@ -2,22 +2,19 @@
 
 library(readxl)
 library(data.table)
-library("plyr")
+library(plyr)
 library(meta)
 library(purrr)
 library(metafor)
-library(rio) # per leggere piu sheets di R
+library(rio) 
 library(WriteXLS)
 library(writexl)
-
-
 
 id <- c("0039", "0705", "0715", "0772", "0800", "0802", "0862", "0952", "0974", "1444", "3190", "3386", "3446")
 length(id)
 
 dataset_anx_brain <- data.frame(matrix(ncol=1, nrow= 13))
 dataset_brain_anx <- data.frame(matrix(ncol=1, nrow= 13))
-
 
 for(i in c(1:13)){
 print(id[i])
