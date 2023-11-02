@@ -6,11 +6,9 @@ library("dplyr")
 library(meta)
 library(purrr)
 library(metafor)
-library(rio) # per leggere piu sheets di R
+library(rio) 
 library(WriteXLS)
 library(writexl)
-
-
 
 h <- fread("/gpfs/gibbs/pi/polimanti/UKBiobank/Brain_MRI/ukb671130.csv")
 head(h)
@@ -154,8 +152,7 @@ for(i in c(1:28)){
 
 
 
-# AGGIUSTAMENTI PRIMA DI GML, STANDARDIZE BRAIN DAT (MEAN 0 SD 1), SEX FROM 0-1 TO 1-2, -121 E -818 TO NA
-
+# STANDARDIZE BRAIN DAT (MEAN 0 SD 1), SEX FROM 0-1 TO 1-2, -121 E -818 TO NA
 
 
 for(i in c(1:26)){
