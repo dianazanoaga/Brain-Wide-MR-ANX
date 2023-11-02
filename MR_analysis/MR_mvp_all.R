@@ -19,9 +19,7 @@ library(writexl)
 
 # load necessary datasets
 
-mvp_all <- fread("/gpfs/gibbs/pi/polimanti/diana/gad_analysis/input_gad/dbGAP_GAD2eurMVP")
-mvp_all <- as.data.frame(mvp_all)
-write.csv(mvp_all, file="/gpfs/gibbs/pi/polimanti/diana/mvp_all.txt")
+mvp_all <- fread("/gpfs/gibbs/pi/polimanti/diana/mvp_all.txt")
 
 
 batch_args <- read_excel(args[1])
@@ -176,8 +174,6 @@ for (i in seq_along(batch_args)) {
   samplesize_col = "N"
 )
 
-
-
 mr_method_list()$name
 
 # harmoniza for anx as exposure and brain as outcome
@@ -199,27 +195,10 @@ mr_method_list()$name
     list_data_1 <- mr_anx_brain_relaxed
   
   
- #} else {
-  
-    #anx_brain_harmonize <- harmonise_data(
-    #exposure_dat = mvp_clump, 
-    #outcome_dat = brain_out
-  #)
-  
-    #mr_anx_brain <- mr(anx_brain_harmonize, method_list = mr_method_list()$obj)
-    #mr_anx_brain$"exposure" = "mvp anxiety"
-    #mr_anx_brain$"outcome" =  batch_args[i]
-    #n <- dim(mr_anx_brain)[1]
-    #mr_anx_brain$"threshold" = rep("stringent threshold", n)
-  
-    #list_data_1 <- mr_anx_brain
-  
- #}
 
 
 # harmonize for brain as exposure and anx as outcome
 
-  #if(dim(mvp_out)[1] < 5) {
   
     brain_anx_harmonize_relaxed <- harmonise_data(
     exposure_dat = brain_clump_relaxed, 
@@ -235,24 +214,6 @@ mr_method_list()$name
   
    list_data_2 <- mr_brain_anx_relaxed
   
- #} else{
-  
-    #brain_anx_harmonize <- harmonise_data(
-    #exposure_dat = brain_clump, 
-    #outcome_dat = mvp_out
-  #)
-  
-  #mendelian 
-  #mr_brain_anx <- mr(brain_anx_harmonize, method_list = mr_method_list()$obj)
-  #mr_brain_anx$"exposure" = batch_args[i]
-  #mr_brain_anx$"outcome" =  "mvp anxiety"
-  #n <- dim(mr_brain_anx)[1]
-  #mr_brain_anx$"threshold" = rep("stringent threshold", n)
-  
-  #list_data_2 <- mr_brain_anx
-  
-  
- #}
 
  list_data <- list("anx_brain" = list_data_1 ,"brain_anx" = list_data_2)
 
