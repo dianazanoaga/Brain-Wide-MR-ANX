@@ -142,4 +142,4 @@ for(i in c(1:6)){
 jj <- mr_res_presso_finn
 
 mr_res_presso_finn[, c(17,18)] <- lapply(mr_res_presso_finn[, c(17,18)], as.character)
-write_xlsx(mr_res_presso_finn[,-1], paste0("/gpfs/gibbs/pi/polimanti/diana/finn_presso_final.xlsx"))
+write_xlsx(mr_res_presso_finn[,-1], paste0("/gpfs/gibbs/pi/polimanti/diana/finn_presso_harm_final.xlsx"))
