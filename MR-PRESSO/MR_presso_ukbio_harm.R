@@ -14,9 +14,7 @@ library(writexl)
 library(MendelianRandomization)
 library(tidyverse)
 library(TwoSampleMR)
-
 library(MRPRESSO)
-
 
 # Load summary statistics 
 
@@ -120,7 +118,6 @@ for(i in c(1:6)){
   
   mr_res_presso_ukbio$dist_coef_ukbio[i] <- NA
   mr_res_presso_ukbio$dist_pval_ukbio[i] <- NA
-  
   
   if(!is.null(presso_ukbio$`MR-PRESSO results`$`Distortion Test`$`Outliers Indices`)){
     

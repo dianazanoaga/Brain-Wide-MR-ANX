@@ -3,8 +3,7 @@
 library(remotes)
 library(readxl)
 library(data.table)
-library("plyr")
-library("dplyr")
+library(dplyr)
 library(meta)
 library(purrr)
 library(metafor)
@@ -14,10 +13,7 @@ library(writexl)
 library(MendelianRandomization)
 library(tidyverse)
 library(TwoSampleMR)
-
 library(MRPRESSO)
-
-
 
 # Load summary statistics 
 
@@ -31,7 +27,6 @@ mvp_all <- fread("/gpfs/gibbs/pi/polimanti/diana/gad_analysis/input_gad/dbGAP_GA
 for(i in 1:length(my_list)) {  # assign function within loop
   
   brain <- fread(my_list[i])
-  #brain_sig_relaxed <- brain[brain$pvalue < 1*10^(-5)]
   assign(paste0("brain_", i), format_data(brain, 
                                           type="exposure", 
                                           phenotype_col = "brain",
@@ -42,8 +37,6 @@ for(i in 1:length(my_list)) {  # assign function within loop
                                           other_allele_col = "a1",
                                           pval_col = "pvalue"))
 }
-
-
 
 mvp_pre <- mvp_all
 
@@ -76,15 +69,11 @@ for(i in 1:6) {
     outcome_dat = get(paste0("mvp_out_", i))
   ))
   
-  
 }
-
 
 mr_res_presso_mvp <- as.data.frame(matrix(nrow=6, ncol=1))
 mr_res_presso_mvp$out_snp_mvp <- NULL
 mr_res_presso_mvp$out_ind_mvp <- NULL
-
-
 
 for(i in c(1:6)){
   
@@ -95,7 +84,6 @@ for(i in c(1:6)){
 
   write_xlsx(get(paste0("brain_anx_harmonize_", i)), paste0("/gpfs/gibbs/pi/polimanti/diana/MR_beta_exp_combined/", id, "_mvp_harmonize.xlsx"))
   
-
   print(id)
 
   dataexcel <- read_excel(paste0("/gpfs/gibbs/pi/polimanti/diana/MR_beta_exp_combined/", id, "_mvp_harmonize.xlsx"))
@@ -123,10 +111,8 @@ for(i in c(1:6)){
   mr_res_presso_mvp$global_test_rsobs_mvp[i] <- presso_mvp$`MR-PRESSO results`$`Global Test`$RSSobs
   mr_res_presso_mvp$global_test_pval_mvp[i] <- presso_mvp$`MR-PRESSO results`$`Global Test`$Pvalue
   
-  
   mr_res_presso_mvp$dist_coef_mvp[i] <- NA
   mr_res_presso_mvp$dist_pval_mvp[i] <- NA
-  
   
   if(!is.null(presso_mvp$`MR-PRESSO results`$`Distortion Test`$`Outliers Indices`)){
     

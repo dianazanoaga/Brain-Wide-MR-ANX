@@ -1,5 +1,3 @@
-
-
 library(meta)
 library(readxl)
 library(data.table)
@@ -10,7 +8,6 @@ library(metafor)
 library(rio) # per leggere piu sheets di R
 library(WriteXLS)
 library(writexl)
-
 
 mvp_multivariable_result <- read_excel("/gpfs/gibbs/pi/polimanti/diana/mvp_multivariableMr_harm.xlsx")
 finn_multivariable_result <- read_excel("/gpfs/gibbs/pi/polimanti/diana/finn_multivariableMr_harm.xlsx")

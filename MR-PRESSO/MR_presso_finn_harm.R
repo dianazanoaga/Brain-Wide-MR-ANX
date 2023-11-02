@@ -26,6 +26,7 @@ finn_all <- fread("/gpfs/gibbs/pi/polimanti/diana/gad_analysis/input_gad/finngen
 for(i in 1:length(my_list)) {  # assign function within loop
   
   brain <- fread(my_list[i])
+
   assign(paste0("brain_", i), format_data(brain, 
                                           type="exposure", 
                                           phenotype_col = "brain",
@@ -64,7 +65,6 @@ for(i in 1:length(my_list)) {
 
     )
   
- 
   assign(paste0("brain_anx_harmonize_", i), harmonise_data(
 
     exposure_dat = get(paste0("b_", i, "_clump")), 
@@ -79,7 +79,6 @@ mr_res_presso_finn <- as.data.frame(matrix(nrow=6, ncol=1))
 mr_res_presso_finn$out_ind_finn <- NULL
 mr_res_presso_finn$out_snp_finn <- NULL
 
-
 for(i in 1:length(my_list)){
   
   print(i)
@@ -93,7 +92,6 @@ for(i in 1:length(my_list)){
   dataex <- read_excel(paste0("/gpfs/gibbs/pi/polimanti/diana/MR_beta_exp_combined/", id, "_finn_harmonize.xlsx"))
   dataex <- as.data.frame(dataex)
   presso_finn <- mr_presso(BetaOutcome = "beta.outcome", BetaExposure = "beta.exposure", SdOutcome = "se.outcome", SdExposure = "se.exposure", OUTLIERtest = TRUE, DISTORTIONtest = TRUE, data = dataex, NbDistribution = 10000, SignifThreshold = 0.05)
-  
   
   mr_res<- as.data.frame(presso_finn$`Main MR results`)
   print(mr_res)
@@ -115,10 +113,8 @@ for(i in 1:length(my_list)){
   mr_res_presso_finn$global_test_rsobs_finn[i] <- presso_finn$`MR-PRESSO results`$`Global Test`$RSSobs
   mr_res_presso_finn$global_test_pval_finn[i] <- presso_finn$`MR-PRESSO results`$`Global Test`$Pvalue
   
-  
   mr_res_presso_finn$dist_coef_finn[i] <- NA
   mr_res_presso_finn$dist_pval_finn[i] <- NA
-  
   
   if(!is.null(presso_finn$`MR-PRESSO results`$`Distortion Test`$`Outliers Indices`)){
     
@@ -140,7 +136,6 @@ for(i in 1:length(my_list)){
   }
   
 }
-jj <- mr_res_presso_finn
 
 mr_res_presso_finn[, c(17,18)] <- lapply(mr_res_presso_finn[, c(17,18)], as.character)
 write_xlsx(mr_res_presso_finn[,-1], paste0("/gpfs/gibbs/pi/polimanti/diana/finn_presso_harm_final.xlsx"))
