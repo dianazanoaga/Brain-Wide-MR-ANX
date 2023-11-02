@@ -8,7 +8,7 @@ library("dplyr")
 library(meta)
 library(purrr)
 library(metafor)
-library(rio) # per leggere piu sheets di R
+library(rio) 
 library(WriteXLS)
 library(writexl)
 library(MendelianRandomization)
@@ -43,7 +43,7 @@ for(i in 1:length(my_list)) {  # assign function within loop
                                           pval_col = "pvalue"))
 }
 
-# all 6
+
 
 mvp_pre <- mvp_all
 
@@ -95,8 +95,7 @@ for(i in c(1:6)){
 
   write_xlsx(get(paste0("brain_anx_harmonize_", i)), paste0("/gpfs/gibbs/pi/polimanti/diana/MR_beta_exp_combined/", id, "_mvp_harmonize.xlsx"))
   
-  #data <- get(paste0("brain_anx_harmonize_",i))
-  #data <- as.data.frame(data)
+
   print(id)
 
   dataexcel <- read_excel(paste0("/gpfs/gibbs/pi/polimanti/diana/MR_beta_exp_combined/", id, "_mvp_harmonize.xlsx"))
@@ -124,8 +123,7 @@ for(i in c(1:6)){
   mr_res_presso_mvp$global_test_rsobs_mvp[i] <- presso_mvp$`MR-PRESSO results`$`Global Test`$RSSobs
   mr_res_presso_mvp$global_test_pval_mvp[i] <- presso_mvp$`MR-PRESSO results`$`Global Test`$Pvalue
   
-  #mr_res_presso_mvp$out_snp_mvp[i] <- NA
-  #mr_res_presso_mvp$out_ind_mvp[i] <- NA
+  
   mr_res_presso_mvp$dist_coef_mvp[i] <- NA
   mr_res_presso_mvp$dist_pval_mvp[i] <- NA
   
@@ -133,7 +131,7 @@ for(i in c(1:6)){
   if(!is.null(presso_mvp$`MR-PRESSO results`$`Distortion Test`$`Outliers Indices`)){
     
     indici <- as.list(presso_mvp$`MR-PRESSO results`$`Distortion Test`$`Outliers Indices`)
-    #mr_res_presso_mvp$out_ind_mvp[i] <- NA
+    
     mr_res_presso_mvp$out_ind_mvp[[i]] <- indici
     
     snps <- list()
@@ -142,7 +140,6 @@ for(i in c(1:6)){
     }
     
     print(snps)
-    #mr_res_presso_mvp$out_snp_mvp[i] <- NA
     mr_res_presso_mvp$out_snp_mvp[[i]] <- snps
     
     mr_res_presso_mvp$dist_coef_mvp[i] <- presso_mvp$`MR-PRESSO results`$`Distortion Test`$`Distortion Coefficient`
@@ -156,8 +153,5 @@ mry <- mr_res_presso_mvp
 
 mr_res_presso_mvp[, c(17,18)] <- lapply(mr_res_presso_mvp[, c(17,18)], as.character)
 
-#write_xlsx(mr_res_presso_mvp[,-1], paste0("/gpfs/gibbs/pi/polimanti/diana/mvp_presso_new.xlsx"))
-#write_xlsx(mr_res_presso_mvp[,-1], paste0("/gpfs/gibbs/pi/polimanti/diana/mvp_presso_new_secondotrial.xlsx"))
-#write_xlsx(mr_res_presso_mvp[,-1], paste0("/gpfs/gibbs/pi/polimanti/diana/mvp_presso_new_secondotrial_harm.xlsx"))
 write_xlsx(mr_res_presso_mvp[,-1], paste0("/gpfs/gibbs/pi/polimanti/diana/mvp_presso_harm_final.xlsx"))
 

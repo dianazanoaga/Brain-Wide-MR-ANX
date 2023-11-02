@@ -10,16 +10,9 @@ library(rio) # per leggere piu sheets di R
 library(WriteXLS)
 library(writexl)
 
-mr_res_presso_finn <- read_excel("/gpfs/gibbs/pi/polimanti/diana/finn_presso_new_secondotrial.xlsx")
-#mr_res_presso_mvp <- read_excel("/gpfs/gibbs/pi/polimanti/diana/mvp_presso_new_secondotrial.xlsx")
-mr_res_presso_ukbio <- read_excel("/gpfs/gibbs/pi/polimanti/diana/ukbio_presso_new_secontrial.xlsx")
+
 
 mr_res_presso_finn <- read_excel("/gpfs/gibbs/pi/polimanti/diana/finn_presso_harm_final.xlsx")
-mr_res_presso_mvp <- read_excel("/gpfs/gibbs/pi/polimanti/diana/mvp_presso_harm_final.xlsx")
-mr_res_presso_ukbio <- read_excel("/gpfs/gibbs/pi/polimanti/diana/ukbio_presso_harm_final.xlsx")
-
-
-mr_res_presso_finn <- read_excel("/gpfs/gibbs/pi/polimanti/diana/finn_presso_final.xlsx")
 mr_res_presso_mvp <- read_excel("/gpfs/gibbs/pi/polimanti/diana/mvp_presso_harm_final.xlsx")
 mr_res_presso_ukbio <- read_excel("/gpfs/gibbs/pi/polimanti/diana/ukbio_presso_harm_final.xlsx")
 

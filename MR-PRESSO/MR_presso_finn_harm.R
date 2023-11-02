@@ -8,7 +8,7 @@ library("dplyr")
 library(meta)
 library(purrr)
 library(metafor)
-library(rio) # per leggere piu sheets di R
+library(rio) 
 library(WriteXLS)
 library(writexl)
 library(MendelianRandomization)
@@ -18,7 +18,6 @@ library(TwoSampleMR)
 library(MRPRESSO)
 
 
-
 # Load summary statistics 
 
 my_list = c("/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/0953.txt","/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/0043.txt","/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/1961.txt",
@@ -26,15 +25,10 @@ my_list = c("/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/0953.txt","/gpfs/
 
 
 finn_all <- fread("/gpfs/gibbs/pi/polimanti/diana/gad_analysis/input_gad/finngen_R8_KRA_PSY_ANXIETY_EXMORE")
-#g <- finn_all
-#finn_all <- finn_all[- (finn_all$rsids == "rs199498" & finn_all$alt == "G"), ]
-
-
 
 for(i in 1:length(my_list)) {  # assign function within loop
   
   brain <- fread(my_list[i])
-  #brain_sig_relaxed <- brain[brain$pvalue < 1*10^(-5)]
   assign(paste0("brain_", i), format_data(brain, 
                                           type="exposure", 
                                           phenotype_col = "brain",
@@ -46,7 +40,6 @@ for(i in 1:length(my_list)) {  # assign function within loop
                                           pval_col = "pvalue"))
 }
 
-# all 6
 
 # select only those with pvalu less than 1x10(-5) and clump data 
 for(i in 1:6){
@@ -96,17 +89,8 @@ for(i in c(1:6)){
   print(id)
   write_xlsx(get(paste0("brain_anx_harmonize_", i)), paste0("/gpfs/gibbs/pi/polimanti/diana/MR_beta_exp_combined/", id, "_finn_harmonize.xlsx"))
   
-  
-  #datacodice <- get(paste0("brain_anx_harmonize_", i))
-  #datacodice <- as.data.frame(datacodice)
-  #datacodice <- datacodice[, c(1, 6,7,16, 23)]
-  
-  #dataexcel <- data.frame()
   dataex <- read_excel(paste0("/gpfs/gibbs/pi/polimanti/diana/MR_beta_exp_combined/", id, "_finn_harmonize.xlsx"))
   dataex <- as.data.frame(dataex)
-  #dataexcel <- dataexcel[, c(1,6,7,16,23)]
-    
-  #presso_finn_codice_2 <- mr_presso(BetaOutcome = "beta.outcome", BetaExposure = "beta.exposure", SdOutcome = "se.outcome", SdExposure = "se.exposure", OUTLIERtest = TRUE, DISTORTIONtest = TRUE, data = datacodice, NbDistribution = 10000, SignifThreshold = 0.05)
   presso_finn <- mr_presso(BetaOutcome = "beta.outcome", BetaExposure = "beta.exposure", SdOutcome = "se.outcome", SdExposure = "se.exposure", OUTLIERtest = TRUE, DISTORTIONtest = TRUE, data = dataex, NbDistribution = 10000, SignifThreshold = 0.05)
   
   
@@ -130,8 +114,7 @@ for(i in c(1:6)){
   mr_res_presso_finn$global_test_rsobs_finn[i] <- presso_finn$`MR-PRESSO results`$`Global Test`$RSSobs
   mr_res_presso_finn$global_test_pval_finn[i] <- presso_finn$`MR-PRESSO results`$`Global Test`$Pvalue
   
-  #mr_res_presso_finn$out_snp_finn[i] <- NA
-  #mr_res_presso_finn$out_ind_finn[i] <- NA
+  
   mr_res_presso_finn$dist_coef_finn[i] <- NA
   mr_res_presso_finn$dist_pval_finn[i] <- NA
   
@@ -139,7 +122,6 @@ for(i in c(1:6)){
   if(!is.null(presso_finn$`MR-PRESSO results`$`Distortion Test`$`Outliers Indices`)){
     
     indici <- as.list(presso_finn$`MR-PRESSO results`$`Distortion Test`$`Outliers Indices`)
-    #mr_res_presso_finn$out_ind_finn[i] <- NA
     mr_res_presso_finn$out_ind_finn[[i]] <- indici
     
     snps <- list()
@@ -148,7 +130,6 @@ for(i in c(1:6)){
     }
     
     print(snps)
-    #mr_res_presso_finn$out_snp_finn[i] <- NA
     mr_res_presso_finn$out_snp_finn[[i]] <- snps
     
     mr_res_presso_finn$dist_coef_finn[i] <- presso_finn$`MR-PRESSO results`$`Distortion Test`$`Distortion Coefficient`
@@ -161,8 +142,4 @@ for(i in c(1:6)){
 jj <- mr_res_presso_finn
 
 mr_res_presso_finn[, c(17,18)] <- lapply(mr_res_presso_finn[, c(17,18)], as.character)
-#write_xlsx(mr_res_presso_finn[,-1], paste0("/gpfs/gibbs/pi/polimanti/diana/finn_presso_new.xlsx"))
-#write_xlsx(mr_res_presso_finn[,-1], paste0("/gpfs/gibbs/pi/polimanti/diana/finn_presso_new_secondotrial.xlsx"))
-
-#write_xlsx(mr_res_presso_finn[,-1], paste0("/gpfs/gibbs/pi/polimanti/diana/finn_presso_new_secondotrial_harm.xlsx"))
 write_xlsx(mr_res_presso_finn[,-1], paste0("/gpfs/gibbs/pi/polimanti/diana/finn_presso_final.xlsx"))
