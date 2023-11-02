@@ -79,11 +79,5 @@ dataset$"p_adj_common_het_multi" <- p.adjust(dataset$"meta_het_common" , method=
 
 dataset$"p_adj_dl_het" <- p.adjust(dataset$"meta_het_dl" , method="fdr")
 
-
 write_xlsx(dataset, "/gpfs/gibbs/pi/polimanti/diana/meta_multivariable_MR_harm.xlsx")
 
-
-corr_between_6 <- read_excel("/gpfs/gibbs/pi/polimanti/diana/corr_between_6brains.xlsx")
-corr_between_6 <- as.data.frame(corr_between_6)
-corr_between_6$"p_adj" <- p.adjust(corr_between_6$p, "fdr")
-write_xlsx(corr_between_6, "/gpfs/gibbs/pi/polimanti/diana/corr_between_6brains.xlsx")

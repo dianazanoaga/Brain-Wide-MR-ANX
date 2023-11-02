@@ -1,21 +1,17 @@
 #!/usr/bin/env Rscript
 
-
 library(readxl)
 library(data.table)
-library("plyr")
-library("dplyr")
+library(dplyr)
 library(meta)
 library(purrr)
 library(metafor)
-library(rio) # per leggere piu sheets di R
+library(rio) 
 library(WriteXLS)
 library(writexl)
 library(MendelianRandomization)
 library(tidyverse)
 library(TwoSampleMR)
-
-
 
 my_list = c("/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/0953.txt","/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/0043.txt","/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/1961.txt",
             "/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/1511.txt","/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/1437.txt","/gpfs/gibbs/pi/polimanti/diana/files_format_nuovi/3915.txt")
@@ -72,10 +68,9 @@ for(i in c(1:1205886)){
 
 dt_all_sig <- unique(dt_all[dt_all$pval.exposure < 1*10^(-5),])
 
-# clump data!
+# clump data
 dt_all_sig_clump <- clump_data(dt_all_sig)
 write_xlsx(dt_all_sig_clump, "/gpfs/gibbs/pi/polimanti/diana/multivariable_exp_input_clump_harm.xlsx")
-
 
 # take only the selected snps from the original dataset
 for(i in 1:6){
@@ -98,7 +93,6 @@ for(i in 1:6) {
     other_allele_col = "ref",
     pval_col = "pval"))
   
-  
   assign(paste0("b_finn_",i, "_har"), harmonise_data(
     exposure_dat = get(paste0("brain_selected_snps_", i)), 
     outcome_dat = get(paste0("finn_out_", i))
@@ -106,11 +100,11 @@ for(i in 1:6) {
   ))
 }
 
-# Take only colonne che vogliamo
+# Take only columns we need 
+
 for(i in 1:6){
   assign(paste0("b_finn_short_", i, "_har"), get(paste0("b_finn_", i, "_har"))[,c(1:7, 14, 15, 16, 23, 24)])
 }
-
 
 common_rows_new <- list(b_finn_short_1_har, b_finn_short_2_har, b_finn_short_3_har,
                         b_finn_short_4_har, b_finn_short_5_har, b_finn_short_6_har)
@@ -132,8 +126,6 @@ m3s =matrix(common_rows_new$se.exposure.2)
 m4s =matrix(common_rows_new$se.exposure.3)
 m5s =matrix(common_rows_new$se.exposure.4)
 m6s = matrix(common_rows_new$se.exposure.5)
-
-
 
 MRMVInputObject <- mr_mvinput(bx = cbind(m1,m2,m3,m4,m5,m6),
                               bxse = cbind(m1s, m2s, m3s, m4s, m5s, m6s),
