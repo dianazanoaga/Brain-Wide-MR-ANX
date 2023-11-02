@@ -35,22 +35,22 @@ anx_da_usare <- anx[anx$related == "false", c(1,24:28)]
 
 data_frames_0043r <- list(anx_da_usare, right_0043)
 anx_right_0043 <- reduce(data_frames_0043r, inner_join, by = "ID")
-sum(!is.na(anx_right_0043$right_0043)) #32892
+sum(!is.na(anx_right_0043$right_0043)) 
 anx_right_0043_fin <- anx_right_0043[!is.na(anx_right_0043$right_0043),]
 
 data_frames_0043l <- list(anx_da_usare, left_0043)
 anx_left_0043 <- reduce(data_frames_0043l, inner_join, by = "ID")
-sum(!is.na(anx_left_0043$left_0043)) #32892
+sum(!is.na(anx_left_0043$left_0043)) 
 anx_left_0043_fin <- anx_left_0043[!is.na(anx_left_0043$left_0043),]
 
 data_frames_0953r <- list(anx_da_usare, right_0953)
 anx_right_0953 <- reduce(data_frames_0953r, inner_join, by = "ID")
-sum(!is.na(anx_right_0953$right_0953)) #33124
+sum(!is.na(anx_right_0953$right_0953)) 
 anx_right_0953_fin <- anx_right_0953[!is.na(anx_right_0953$right_0953),]
 
 data_frames_0953l <- list(anx_da_usare, left_0953)
 anx_left_0953 <- reduce(data_frames_0953l, inner_join, by = "ID")
-sum(!is.na(anx_left_0953$left_0953)) #33124
+sum(!is.na(anx_left_0953$left_0953)) 
 anx_left_0953_fin <- anx_left_0953[!is.na(anx_left_0953$left_0953),]
 
 my_list <-list.files("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/anx_symptoms")
@@ -79,12 +79,10 @@ for(i in c(1:28)){
   assign(paste0("0043_anx_right_", my_list[i]), as.data.frame(get(paste0("0043_anx_right_", my_list[i]))))
   assign(paste0("0043_anx_right_", my_list[i], "_fin"), get(paste0("0043_anx_right_", my_list[i]))[!is.na(get(paste0("0043_anx_right_", my_list[i]))[,8]),])
 
-  
   tab_finale_0043r$"name"[i] <- paste0("0043_anx_right_", my_list[i], "_fin")
   tab_finale_0043r$"n_id"[i] <- paste0(dim(get(paste0("0043_anx_right_", my_list[i], "_fin")))[1])
   
 }
-head(`0043_anx_right_20417.csv.gz_fin`)
 
 tab_finale_0043l <- as.data.frame(matrix(nrow=28, ncol =1))
 
@@ -101,9 +99,6 @@ for(i in c(1:28)){
   tab_finale_0043l$"n_id"[i] <- paste0(dim(get(paste0("0043_anx_left_", my_list[i], "_fin")))[1])
   
 }
-
-head(`0043_anx_right_20417.csv.gz_fin`)
-head(`0043_anx_left_20417.csv.gz_fin`)
 
 tab_finale_0953r <- as.data.frame(matrix(nrow=28, ncol =1))
 
@@ -122,7 +117,6 @@ for(i in c(1:28)){
 }
 
 tab_finale_0953l <- as.data.frame(matrix(nrow=28, ncol =1))
-
 
 for(i in c(1:28)){
   
@@ -164,14 +158,12 @@ for(i in c(1:26)){
   assign(paste0("0043_anx_left_", my_list[i], "_finfin"), as.data.frame(get(paste0("0043_anx_left_", my_list[i], "_finfin"))))
   my_var <- paste0("0043_anx_left_", my_list[i], "_finfin")
   my_data <- get(my_var)
-  #print(my_data)
   my_data[,3][my_data[,3] == 0] <- 2
   my_data[,4]<- my_data[,2] * my_data[,3]
   my_data[,5]<- my_data[,2] * my_data[,2]
   my_data[,6]<- my_data[,2] * my_data[,2] * my_data[,3] 
   my_data[,7] <- scale(my_data[,7] ) 
   my_data[,8][my_data[,8] == -121 | my_data[,8] == -818] <- NA
-  #print(my_data)
   assign(paste0("0043_anx_left_", my_list[i], "_finfin"), my_data)
   
 }
@@ -182,14 +174,12 @@ for(i in c(1:26)){
   assign(paste0("0953_anx_right_", my_list[i], "_finfin"), as.data.frame(get(paste0("0953_anx_right_", my_list[i], "_finfin"))))
   my_var <- paste0("0953_anx_right_", my_list[i], "_finfin")
   my_data <- get(my_var)
-  #print(my_data)
   my_data[,3][my_data[,3] == 0] <- 2
   my_data[,4]<- my_data[,2] * my_data[,3]
   my_data[,5]<- my_data[,2] * my_data[,2]
   my_data[,6]<- my_data[,2] * my_data[,2] * my_data[,3] 
   my_data[,7] <- scale(my_data[,7] ) 
   my_data[,8][my_data[,8] == -121 | my_data[,8] == -818] <- NA
-  #print(my_data)
   assign(paste0("0953_anx_right_", my_list[i], "_finfin"), my_data)
   
 }
@@ -200,19 +190,17 @@ for(i in c(1:26)){
   assign(paste0("0953_anx_left_", my_list[i], "_finfin"), as.data.frame(get(paste0("0953_anx_left_", my_list[i], "_finfin"))))
   my_var <- paste0("0953_anx_left_", my_list[i], "_finfin")
   my_data <- get(my_var)
-  #print(my_data)
   my_data[,3][my_data[,3] == 0] <- 2
   my_data[,4]<- my_data[,2] * my_data[,3]
   my_data[,5]<- my_data[,2] * my_data[,2]
   my_data[,6]<- my_data[,2] * my_data[,2] * my_data[,3] 
   my_data[,7] <- scale(my_data[,7] ) 
   my_data[,8][my_data[,8] == -121 | my_data[,8] == -818] <- NA
-  #print(my_data)
   assign(paste0("0953_anx_left_", my_list[i], "_finfin"), my_data)
   
 }
 
-#regression
+# Regression
 
 for(i in c(1:26)){
 
@@ -225,7 +213,6 @@ dt_d <- summary(dt)$coefficients
 write.csv(dt_d ,file=paste0('/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_all_cov_0043right/', "0043_anx_right_", my_list[i], ".xlsx"))
 
 }
-
 
 for(i in c(1:26)){
   
@@ -264,12 +251,8 @@ for(i in c(1:26)){
 }
 
 my_list_0043l <-list.files("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_all_cov_0043left")
-
 all_cov_0043left.results <- data.frame(matrix(nrow=26, ncol=5))
 
-i = 1
-prova <- fread(paste0("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_all_cov_0043left/",my_list_0043l[i]))
-colnames(all_cov_0043left.results) <- colnames(prova)
   
 for(i in c(1:26)){
   
@@ -295,15 +278,11 @@ for(i in c(1:26)){
 
 write.csv(all_cov_0043right.results ,file= "/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/all_cov_0043right.result.xlsx")
 
- # new 
+# new 
 
 my_list_0953l <-list.files("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_all_cov_0953left")
 
 all_cov_0953left.results <- data.frame(matrix(nrow=26, ncol=5))
-
-i = 1
-prova <- fread(paste0("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_all_cov_0953left/",my_list_0953l[i]))
-colnames(all_cov_0953left.results) <- colnames(prova)
 
 for(i in c(1:26)){
   
@@ -371,9 +350,6 @@ for(i in c(1:26)){
 
 my_list_0043l <- list.files("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_agesex_0043left")
 all_cov_0043left.results <- data.frame(matrix(nrow=0, ncol=6))
-i = 1
-prova <- fread(paste0("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_agesex_0043left/",my_list_0043l[i]))
-colnames(all_cov_0043left.results) <- colnames(prova)
 
 for(i in c(1:26)){
   
@@ -393,9 +369,6 @@ write.csv(all_cov_0043left.results ,file= "/gpfs/gibbs/pi/polimanti/diana/ultime
 
 my_list_0043r <-list.files("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_agesex_0043right")
 all_cov_0043right.results <- data.frame(matrix(nrow=0, ncol=6))
-i = 1
-prova <- fread(paste0("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_agesex_0043right/",my_list_0043r[i]))
-colnames(all_cov_0043right.results) <- colnames(prova)
 
 for(i in c(1:26)){
   
@@ -414,9 +387,7 @@ write_xlsx(all_cov_0043right.results ,"/gpfs/gibbs/pi/polimanti/diana/ultime_ana
 
 my_list_0953l <-list.files("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_agesex_0953left")
 all_cov_0953left.results <- data.frame(matrix(nrow=0, ncol=5))
-i = 1
-prova <- fread(paste0("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_agesex_0953left/",my_list_0953l[i]))
-colnames(all_cov_0953left.results) <- colnames(prova)
+
 
 for(i in c(1:26)){
   
@@ -435,9 +406,6 @@ write_xlsx(all_cov_0953left.results ,"/gpfs/gibbs/pi/polimanti/diana/ultime_anal
 
 my_list_0953r <-list.files("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_agesex_0953right")
 all_cov_0953right.results <- data.frame(matrix(nrow=0, ncol=5))
-i = 1
-prova <- fread(paste0("/gpfs/gibbs/pi/polimanti/diana/ultime_analisi/summary_agesex_0953right/",my_list_0953r[i]))
-colnames(all_cov_0953right.results) <- colnames(prova)
 
 for(i in c(1:26)){
   
